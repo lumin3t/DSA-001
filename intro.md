@@ -113,7 +113,7 @@ This setup demonstrates how `extern` allows `pi` to be accessed across multiple 
 
 ___
 
-Bitfields in C are a way to allocate specific bits for variables within a struct, allowing memory-efficient storage. Here’s an outline for a 5-mark answer:
+Bitfields in C are a way to allocate specific bits for variables within a struct, allowing memory-efficient storage. 
 
 1. **Definition**: Bitfields let you specify the number of bits each variable uses, ideal for saving memory in scenarios like embedded systems.
 
@@ -136,8 +136,7 @@ int main() {
     struct date dt = { 31, 12, 2014 };
     printf("Date is %d/%d/%d", dt.d, dt.m, dt.y);
     return 0;
-}
-   ```
+}```
 
 3. **Usage**: They’re used to represent flags, status registers, or compact data that fits within limited bits.
 
