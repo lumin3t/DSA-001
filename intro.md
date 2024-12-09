@@ -119,7 +119,6 @@ Bitfields in C are a way to allocate specific bits for variables within a struct
 
 2. **Example**:
    ```c
-   // Space optimized representation of the date
 struct date {
     // d has value between 0 and 31, so 5 bits
     // are sufficient
