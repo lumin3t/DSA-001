@@ -358,7 +358,7 @@ qdisplay() {
 ### 1. Circular Queue
 
 In a **circular queue**, the last position connects back to the first, forming a circle. This structure avoids the need to shift elements and uses the space more efficiently. It works on FIFO principle and forms what's called as a "Ring buffer"
-![[Pasted image 20241215012906.png]]
+![Circular queue img](https://github.com/user-attachments/assets/0a3c13f3-7155-4eb2-8769-b54f068687de)
 
 ```c
 #include<stdio.h>
