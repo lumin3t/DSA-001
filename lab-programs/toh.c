@@ -5,13 +5,12 @@ void TOH (int n, char src, char dest, char temp) {
     if (n>0) {
         TOH(n-1, src, temp, dest);
         printf("Move disk %d from %c to %c\n", n,src, dest);
-        TOH(n-2, temp, dest, src);
+        TOH(n-1, temp, dest, src);
     }
     return;
 }
 int main() {
     int n;
-    printf("E\n");
     printf("Enter disk number: ");
     scanf("%d", &n);
     TOH(n, 'A', 'C', 'B');
