@@ -1,6 +1,4 @@
-A **Binary Tree** is a hierarchical data structure where each node has at most two children, typically referred to as the left and right children. The tree starts with a root node, and every node can have zero, one, or two child nodes.
-
-![image](https://github.com/user-attachments/assets/0eabe9a8-98ef-478c-83ae-e73c7be45286)
+A **Binary Tree** is a hierarchical data structure where each node has at most two children, typically referred to as the left and right children. The tree starts with a root node, and every node can have zero, one, or two child nodes..
 
 ### Trees terminology
 
