@@ -485,25 +485,96 @@ int main () {
 
 ![image](https://github.com/user-attachments/assets/27c467e8-48de-48fd-bfc1-33d68dacf4e6)
 
-```
-POLYNOMIAL ADDITION ALGORITHM
-----------------------------
-Data Structure: Linked List(coef, exp, next)
-Input: Two polynomials P1, P2 in decreasing order of exponents
+```c
+#include <stdio.h>
+#include <stdlib.h>
 
-Algorithm:
-1. While P1 and P2 are not empty:
-   - Compare exponents
-   - If equal: Add coefficients, append to result
-   - If P1.exp > P2.exp: Append P1 term to result
-   - If P2.exp > P1.exp: Append P2 term to result
-   - Move to next term of used polynomial
-2. Append remaining terms from non-empty polynomial
+struct Node {
+    int coeff;
+    int pow;
+    struct Node* next;
+};
+typedef struct Node* NODE;
 
-Example:
-P1: 3x^2 + 2x^1
-P2: 4x^2 + 1x^0
-Result: 7x^2 + 2x^1 + 1x^0
+NODE createNode(int coeff, int pow) {
+    // Create newNode, initialize, and return it
+}
+
+NODE addPolynomials(NODE poly1, NODE poly2) {
+    NODE result = NULL, tail = NULL;
+
+    while (poly1 != NULL || poly2 != NULL) {
+        int coeff, pow;
+
+        if (poly1 != NULL && poly2 != NULL && poly1->pow == poly2->pow) {
+            coeff = poly1->coeff + poly2->coeff;
+            pow = poly1->pow;
+            poly1 = poly1->next;
+            poly2 = poly2->next;
+        } else if (poly2 == NULL || (poly1 != NULL && poly1->pow > poly2->pow)) {
+            coeff = poly1->coeff;
+            pow = poly1->pow;
+            poly1 = poly1->next;
+        } else {
+            coeff = poly2->coeff;
+            pow = poly2->pow;
+            poly2 = poly2->next;
+        }
+
+        if (coeff != 0) {
+            NODE newNode = createNode(coeff, pow);
+            if (result == NULL) {
+                result = tail = newNode;
+            } else {
+                tail->next = newNode;
+                tail = newNode;
+            }
+        }
+    }
+
+    return result;
+}
+
+void displayPolynomial(NODE poly) {
+    while (poly != NULL) {
+        if (poly->pow == 0) {
+            printf("%d", poly->coeff);
+        } else if (poly->pow == 1) {
+            printf("%dx", poly->coeff);
+        } else {
+            printf("%dx^%d", poly->coeff, poly->pow);
+        }
+
+        poly = poly->next;
+        if (poly != NULL && poly->coeff > 0) {
+            printf(" + ");
+        }
+    }
+    printf("\n");
+}
+
+int main() {
+    int poly1[MAX_DEGREE + 1] = {0}; // Polynomial 1
+    int poly2[MAX_DEGREE + 1] = {0}; // Polynomial 2
+    int result[MAX_DEGREE + 1] = {0}; // Resultant polynomial
+    int degree1, degree2;
+
+    // Input for Polynomial 1
+    printf("Enter the degree of polynomial 1: ");
+    scanf("%d", &degree1);
+    printf("Enter the coefficients of polynomial 1 (from x^0 to x^%d): ", degree1);
+    for (int i = 0; i <= degree1; i++) {
+	    scanf("%d", &poly1[i]);
+	 }
+	//Similarly for Polynomial 2
+
+    result = addPolynomials(poly1, poly2);
+
+    //Display poly1, poly2 and result using function displayPolynomial(poly)
+
+    return 0;
+}
+
 ```
 
 **Points to keep in Mind while working with Polynomials**:
