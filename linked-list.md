@@ -39,8 +39,8 @@ Stores dynamically allocated memory (`malloc`). Large, flexible, but slower acce
 ```c
 //DMA in heap
 typedef struct list {
-int info;
-struct list *link;
+	int info;
+	struct list *link;
 } node;
 typedef struct list * NODE;
 NODE start = NULL;
@@ -298,7 +298,7 @@ NODE delete_front(NODE irst) {
     }
     NODE temp = first;
     first = first->next;
-    //if (first != NULL) {//There exists a first node already
+    //if (first != NULL) {//There exists a first node
         first->prev = NULL;
     //}
     printf("Deleted: %d\n", temp->data);
@@ -355,13 +355,17 @@ void display(NODE first) {
     }
     NODE temp = first;
     while (temp != NULL) {
-        printf("%d", temp->data);
+        printf("%d ", temp->data);
         if (temp->next != NULL) { //Looks cool but not really needed
             printf(" <=> ");
         }
         temp = temp->next;
     }
     printf("\n");
+}
+int main () {
+	 NODE first = NULL;
+	//choice menu
 }
 ```
 
@@ -435,7 +439,7 @@ NODE delete_rear (NODE head) {
         printf("Empty list");
         return head;
     }
-    while(ptr->next != head) {
+    while(ptr->next != head) { //traverse to last node
         prev = ptr;
         ptr = ptr->next;
     }
@@ -455,86 +459,31 @@ void display (NODE head) {
         printf("%d ", temp->data);
     }
 }
+int main () {
+	 NODE head;
+	 head->next = head;
+	 //Choices menu
+}
 ```
 
 ### Applications of Linked lists
 
-### Polynomial representation
+#### Polynomial representation
 
 ![image](https://github.com/user-attachments/assets/bdb3b9d1-0b0e-4875-81df-5e27536b3cd2)
 
-> For polynomial arithmetic add nodes with same power
+1. **Define Node Structure**:
+   - Each node contains `coefficient`, `power`, and a pointer to the `next` node.
+2. **Input Polynomials**:
+   - Create two linked lists to represent the two polynomials.
+3. **Add Polynomials**:
+   - Traverse both lists simultaneously.
+   - If the powers match, add the coefficients and create a new node for the resultant list.
+   - If the powers don’t match, insert the node with the higher power into the resultant list.
+4. **Display Result**:
+   - Traverse the resultant list and print the polynomial.
 
-```c
-#include <stdio.h>
-#include <stdlib.h>
-
-struct node {
-   int coeff, exp;
-   struct node *next;
-};
-
-typedef struct node *NODE;
-
-int main() {
-   NODE p1 = NULL, p2 = NULL, result = NULL, temp;
-
-   // Create first polynomial: 3x^2 + 2x^1
-   temp = (NODE)malloc(sizeof(struct node));
-   temp->coeff = 3; temp->exp = 2;
-   p1 = temp;
-
-   temp->next = (NODE)malloc(sizeof(struct node));
-   temp = temp->next;
-   temp->coeff = 2; temp->exp = 1;
-   temp->next = NULL;
-
-   // Create second polynomial: 4x^2 + 1x^0
-   temp = (NODE)malloc(sizeof(struct node));
-   temp->coeff = 4; temp->exp = 2;
-   p2 = temp;
-
-   temp->next = (NODE)malloc(sizeof(struct node));
-   temp = temp->next;
-   temp->coeff = 1; temp->exp = 0;
-   temp->next = NULL;
-
-   // Add polynomials
-   NODE t1 = p1, t2 = p2;
-   while(t1 && t2) {
-       temp = (NODE)malloc(sizeof(struct node));
-       if(result == NULL)
-           result = temp;
-       else
-           temp->next = temp;
-
-       if(t1->exp == t2->exp) {
-           temp->coeff = t1->coeff + t2->coeff;
-           temp->exp = t1->exp;
-           t1 = t1->next; t2 = t2->next;
-       }
-       else if(t1->exp > t2->exp) {
-           temp->coeff = t1->coeff;
-           temp->exp = t1->exp;
-           t1 = t1->next;
-       }
-       else {
-           temp->coeff = t2->coeff;
-           temp->exp = t2->exp;
-           t2 = t2->next;
-       }
-   }
-
-   // Display result
-   printf("Result: ");
-   for(temp = result; temp != NULL; temp = temp->next) {
-       printf("%dx^%d ", temp->coeff, temp->exp);
-       if(temp->next) printf("+ ");
-   }
-
-   return 0;
-}
-```
+![image](https://github.com/user-attachments/assets/27c467e8-48de-48fd-bfc1-33d68dacf4e6)
 
 ```
 POLYNOMIAL ADDITION ALGORITHM
@@ -549,58 +498,87 @@ Algorithm:
    - If P1.exp > P2.exp: Append P1 term to result
    - If P2.exp > P1.exp: Append P2 term to result
    - Move to next term of used polynomial
-
 2. Append remaining terms from non-empty polynomial
 
 Example:
 P1: 3x^2 + 2x^1
 P2: 4x^2 + 1x^0
 Result: 7x^2 + 2x^1 + 1x^0
-
-Representation:
-Node = {coef | exp | next}
-P1 = {3|2} -> {2|1} -> NULL
-P2 = {4|2} -> {1|0} -> NULL
 ```
+
+**Points to keep in Mind while working with Polynomials**:
+
+- The sign of each coefficient and exponent is stored within the coefficient and the exponent itself
+- Additional terms having equal exponent is possible one
+- The storage allocation for each term in the polynomial must be done in ascending and descending order of their exponent
 
 #### Sparse Matrix representation
 
 Cuz normal way is a waste of memory
 ![image](https://github.com/user-attachments/assets/bd975ec3-3182-487f-997f-7a0e31f94b63)
 
+- A sparse matrix is a matrix where a large proportion of the elements have a value of zero.
+- In a linked list representation of such a matrix, zero value elements are not represented, saving space.
+
+BUT for some reason in the assignment it says using ARRAYS and we had the same for internals too so
+
+#### Sparse Matrix using arrays
+
 ```c
 #include <stdio.h>
-#include <stdlib.h>
 
-struct node {
-   int row, col, val;
-   struct node *next;
+// Structure to represent a non-zero element in the sparse matrix
+struct Element {
+    int row, col, value;
 };
 
-typedef struct node *NODE;
-
 int main() {
-   NODE head = NULL, temp;
+    int rows, cols, numNonZero;
 
-   // Create nodes with sample sparse matrix values
-   temp = (NODE)malloc(sizeof(struct node));
-   temp->row = 0; temp->col = 2; temp->val = 5;
-   head = temp;
+    // Input the dimensions of the matrix
+    printf("Enter the number of rows and columns: ");
+    scanf("%d %d", &rows, &cols);
 
-   temp->next = (NODE)malloc(sizeof(struct node));
-   temp = temp->next;
-   temp->row = 1; temp->col = 4; temp->val = 7;
+    // Input the number of non-zero elements
+    printf("Enter the number of non-zero elements: ");
+    scanf("%d", &numNonZero);
 
-   temp->next = (NODE)malloc(sizeof(struct node));
-   temp = temp->next;
-   temp->row = 3; temp->col = 1; temp->val = 3;
-   temp->next = NULL;
+    // Create an array to store non-zero elements
+    struct Element sparseMatrix[numNonZero];
 
-   // Display the sparse matrix
-   printf("Row\tCol\tValue\n");
-   for(temp = head; temp != NULL; temp = temp->next)
-       printf("%d\t%d\t%d\n", temp->row, temp->col, temp->val);
+    // Input non-zero elements
+    printf("Enter non-zero elements (row, column, value):\n");
+    for (int i = 0; i < numNonZero; i++) {
+        scanf("%d %d %d", &sparseMatrix[i].row, &sparseMatrix[i].col, &sparseMatrix[i].value);
+    }
 
-   return 0;
+    // Display the sparse matrix
+    printf("\nSparse Matrix Representation:\n");
+    printf("Row\tColumn\tValue\n");
+    for (int i = 0; i < numNonZero; i++) {
+        printf("%d\t%d\t%d\n", sparseMatrix[i].row, sparseMatrix[i].col, sparseMatrix[i].value);
+    }
+
+    return 0;
 }
 ```
+
+###### Output:
+
+```bash
+Enter the number of rows and columns: 4 4
+Enter the number of non-zero elements: 4
+Enter non-zero elements (row, column, value):
+0 1 5
+1 2 8
+2 0 3
+3 3 7
+Sparse Matrix Representation:
+Row     Column  Value
+0       1       5
+1       2       8
+2       0       3
+3       3       7
+```
+
+(Write actual matrix representation after this)
