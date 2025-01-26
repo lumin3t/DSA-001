@@ -1,4 +1,7 @@
-#### Classification and examples (notes)
+Classification and examples (notes)
+![pg1](https://github.com/user-attachments/assets/d6b1eefb-ada0-4341-8fbe-c944a0d12211)
+
+![pg2](https://github.com/user-attachments/assets/c0d8a02e-4a2a-4d4d-95b6-55f1998241aa)
 
 ## Storage classes
 
@@ -117,11 +120,12 @@ This setup demonstrates how `extern` allows `pi` to be accessed across multiple 
 
 ---
 
-Bitfields in C are a way to allocate specific bits for variables within a struct, allowing memory-efficient storage. Here’s an outline for a 5-mark answer:
+Bitfields in C are a way to allocate specific bits for variables within a struct, allowing memory-efficient storage.
 
 1. **Definition**: Bitfields let you specify the number of bits each variable uses, ideal for saving memory in scenarios like embedded systems.
 
 2. **Example**:
+
    ```c
    // Space optimized representation of the date
    struct date {
@@ -133,17 +137,14 @@ Bitfields in C are a way to allocate specific bits for variables within a struct
     int m : 4;
     int y;
    };
+   int main() {
+    printf("Size of date is %lu bytes\n",
+           sizeof(struct date));
+    struct date dt = { 31, 12, 2014 };
+    printf("Date is %d/%d/%d", dt.d, dt.m, dt.y);
+    return 0;
+   }
    ```
-
-int main() {
-printf("Size of date is %lu bytes\n",
-sizeof(struct date));
-struct date dt = { 31, 12, 2014 };
-printf("Date is %d/%d/%d", dt.d, dt.m, dt.y);
-return 0;
-}
-
-````
 
 3. **Usage**: They’re used to represent flags, status registers, or compact data that fits within limited bits.
 
@@ -151,40 +152,39 @@ return 0;
 
 5. **Limitations**: Bitfields aren’t portable across architectures and can be challenging to manipulate.
 
-Sure! Here’s a breakdown of each topic with definitions, examples, and programs for each.
-
 ---
 
-### 1. *Array of Structures*
+### 1. _Array of Structures_
 
 An **array of structures** is a collection of structures of the same type stored in contiguous memory locations, allowing you to manage multiple objects of the same kind easily.
 
 #### Example
+
 Consider a structure `Student` that holds information about students. An array of structures lets you store multiple students' data.
 
 ```c
 #include <stdio.h>
 
 struct Student {
- int id;
- char name[20];
- float grade;
+    int id;
+    char name[20];
+    float grade;
 };
 
 int main() {
- struct Student students[3] = {
-     {101, "Alice", 89.5},
-     {102, "Bob", 72.3},
-     {103, "Charlie", 91.2}
- };
+    struct Student students[3] = {
+        {101, "Alice", 89.5},
+        {102, "Bob", 72.3},
+        {103, "Charlie", 91.2}
+    };
 
- for (int i = 0; i < 3; i++) {
-     printf("ID: %d, Name: %s, Grade: %.2f\n", students[i].id, students[i].name, students[i].grade);
- }
+    for (int i = 0; i < 3; i++) {
+        printf("ID: %d, Name: %s, Grade: %.2f\n", students[i].id, students[i].name, students[i].grade);
+    }
 
- return 0;
+    return 0;
 }
-````
+```
 
 ---
 
@@ -364,6 +364,7 @@ In this example:
 
 ---
 
+(A program can we written to demonstrate these differences using: sizeof(), keywords, initializing errors, syntax)
 ![structs vs unions](https://github.com/user-attachments/assets/160802e0-dcba-4ff9-a583-a7f6e830f3a3)
 
 ### Pointer manipulation
@@ -389,23 +390,149 @@ int main ()
 {
 int var[] = {10, 100, 200};
 int i, *ptr; /* let us have array address in pointer */
-ptr = &var[MAX-1];
-for ( i = MAX; i > 0; i--)
+ptr = &var[MAX-1]; //last elemnt
+for ( i = MAX; i > 0; i--) //decrement
 {
 printf("Address of var[%d] = %x\n", i-1, ptr );
 printf("Value of var[%d] = %d\n", i-1, *ptr ); /* move to the previous location */
-ptr--;
+ptr--; //move pointer to i-1
 }
 return 0;
 }
 ```
 
-Pointer to a constant : `const int* ptr`
-Pointer constant: `int* const ptr`
-Null pointer: Pointer intialized to value of NULL
-Void pointer: of type that doesn't exactly return anything
-Wild pointer: Not initialized to null
-Dangling pointer: Pointing to a non existing or freed location
+---
+
+### Types of pointers:
+
+##### Pointer to a Constant (`const int* ptr`):
+
+A pointer to a constant is a pointer that points to a value that cannot be modified through the pointer. The value being pointed to is constant, but the pointer itself can be changed to point to another memory location. For example:
+
+```c
+const int x = 10;
+const int* ptr = &x; // ptr points to a constant integer
+// *ptr = 20; // Error: Cannot modify the value through ptr
+ptr = NULL; // Valid: The pointer itself can be changed
+```
+
+##### Pointer Constant (`int* const ptr`):
+
+A pointer constant is a pointer whose address (the memory location it points to) cannot be changed. The value being pointed to can be modified, but the pointer itself cannot point to a different memory location. For example:
+
+```c
+int x = 10;
+int* const ptr = &x; // ptr is a constant pointer to an integer
+*ptr = 20; // Valid: The value being pointed to can be modified
+// ptr = NULL; // Error: Cannot change the address the pointer points to
+```
+
+##### Null Pointer:
+
+A null pointer is a pointer that is explicitly initialized to `NULL`. It does not point to any valid memory location and is often used to indicate that the pointer is not currently in use. For example:
+
+```c
+int* ptr = NULL; // ptr is a null pointer
+if (ptr == NULL) {
+    printf("Pointer is null\n");
+}
+```
+
+##### Void Pointer (`void* ptr`):
+
+A void pointer is a pointer that has no specific type associated with it. It can point to any data type, but it cannot be dereferenced directly. It must first be cast to a specific type. For example:
+
+```c
+int x = 10;
+void* ptr = &x; // ptr is a void pointer pointing to an integer
+int* intPtr = (int*)ptr; // Cast to int* before dereferencing
+printf("%d\n", *intPtr); // Output: 10
+```
+
+##### Wild Pointer:
+
+A wild pointer is a pointer that has not been initialized to any valid memory address or `NULL`. It points to a random memory location, which can lead to undefined behavior if dereferenced. For example:
+
+```c
+int* ptr; // ptr is a wild pointer (uninitialized)
+// *ptr = 10; // Undefined behavior: ptr points to an unknown location
+```
+
+##### Dangling Pointer:
+
+A dangling pointer is a pointer that points to a memory location that has been freed or deleted. Dereferencing a dangling pointer leads to undefined behavior. For example:
+
+```c
+int* ptr = (int*)malloc(sizeof(int)); // Dynamically allocate memory
+*ptr = 10;
+free(ptr); // Memory is freed
+// ptr is now a dangling pointer
+// *ptr = 20; // Undefined behavior: ptr points to freed memory
+ptr = NULL; // Best practice: Set pointer to NULL after freeing memory
+```
+
+#### Pointer operations
+
+##### 1. Function Returning a Pointer
+
+```c
+int* createInt(int value) {
+    int* ptr = (int*)malloc(sizeof(int));
+    *ptr = value;
+    return ptr;
+}
+
+int main() {
+    int* ptr = createInt(42);
+    printf("Value: %d\n", *ptr); // Output: 42
+    free(ptr);
+    return 0;
+}
+```
+
+##### 2. Pointer to a Function
+
+```c
+int add(int a, int b) { return a + b; }
+
+int main() {
+    int (*funcPtr)(int, int) = &add;
+    printf("Result: %d\n", funcPtr(5, 3)); // Output: 8
+    return 0;
+}
+```
+
+##### 3. Pointers and Structures
+
+```c
+struct Point { int x; int y; };
+
+int main() {
+    struct Point p1 = {10, 20};
+    struct Point* ptr = &p1;
+    printf("x: %d, y: %d\n", ptr->x, ptr->y); // Output: x: 10, y: 20
+    ptr->x = 30; ptr->y = 40;
+    printf("x: %d, y: %d\n", ptr->x, ptr->y); // Output: x: 30, y: 40
+    return 0;
+}
+```
+
+##### 4. Array of Pointers
+
+```c
+int main() {
+    int a = 10, b = 20, c = 30;
+    int* arr[3] = {&a, &b, &c};
+    for (int i = 0; i < 3; i++) {
+        printf("Value %d: %d\n", i, *arr[i]);
+    }
+    // Output:
+    // Value 0: 10
+    // Value 1: 20
+    // Value 2: 30
+    return 0;
+}
+```
 
 ---
 
@@ -437,6 +564,7 @@ In C, dynamic memory functions include:
 
 #### Example Programs for Each Dynamic Memory Allocation Function:
 
+(Modify this based on required function lol)
 **`DMA` Example**
 
 ```c
@@ -474,15 +602,13 @@ int main() {
 
 ---
 
-### 2. **Command-Line Arguments**
+### Command-Line Arguments
 
 Command-line arguments allow passing parameters to `main` directly from the command line. They’re useful for configuring program behavior based on user input.
 
 - **Syntax**: `int main(int argc, char *argv[])`
   - `argc` (argument count): Number of arguments, including the program name.
   - `argv` (argument vector): Array of argument strings.
-
----
 
 #### Command-Line Arguments Example:
 
@@ -492,7 +618,7 @@ Command-line arguments allow passing parameters to `main` directly from the comm
 int main(int argc, char *argv[]) {
     printf("Program Name: %s\n", argv[0]);
 
-    if (argc < 2) {
+    if (argc < 2) { // Because first argument is always the executable file that contains the output binaries
         printf("No arguments passed\n");
     } else {
         for (int i = 1; i < argc; i++) {
@@ -510,7 +636,7 @@ int main(int argc, char *argv[]) {
 
 ## ![Pasted image 20241111163119](https://github.com/user-attachments/assets/5c648cf1-eba6-4d47-8243-173f570f6ed4)
 
-### 3. **File Management with Command-Line Arguments**
+### File Management with Command-Line Arguments
 
 File management in C allows working with files by opening, reading, writing, and closing them. Command-line arguments let users specify files dynamically.
 
@@ -520,11 +646,11 @@ File management in C allows working with files by opening, reading, writing, and
 #include <stdio.h>
 
 int main(int argc, char *argv[]) {
-    if (argc != 3) {
+    if (argc != 3) { // ./exe <srcfile> <destfile>
         printf("Usage: %s <source file> <destination file>\n", argv[0]);
         return 1;
     }
-
+	 //Open source and dest files
     FILE *src = fopen(argv[1], "r");
     if (src == NULL) {
         printf("Failed to open source file\n");
@@ -555,4 +681,53 @@ int main(int argc, char *argv[]) {
 
 #### How it looks:
 
+("touch" creates files, "echo" inputs string into file, "cat" outputs contents of file)
 ![Pasted image 20241111163614](https://github.com/user-attachments/assets/72834a02-3de4-42f7-a9f2-8f4ada7b7778)
+
+### Misc:
+
+#### Flowchart
+
+![image](https://github.com/user-attachments/assets/1692a7e4-4cb6-4cd2-81eb-4bbf913dbefe)
+
+#### String operations:
+
+```c
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char str1[20] = "Hello";
+    char str2[] = "World";
+    char str3[20];
+
+    // strlen: Get length of str1
+    printf("Length of str1: %zu\n", strlen(str1)); // Output: 5
+
+    // strcat: Concatenate str2 to str1
+    strcat(str1, " ");
+    strcat(str1, str2);
+    printf("Concatenated string: %s\n", str1); // Output: Hello World
+
+    // strcmp: Compare str1 and str2
+    strcpy(str3, "Hello World"); // Copy "Hello World" to str3
+    if (strcmp(str1, str3) == 0) {
+        printf("str1 and str3 are equal\n"); // Output: str1 and str3 are equal
+    } else {
+        printf("str1 and str3 are not equal\n");
+    }
+
+    return 0;
+}
+```
+
+#### Dynamic memory allocation for struct
+
+```c
+// Dynamically allocate memory for an array of structures
+    struct Person* persons = (struct Person*)malloc(n * sizeof(struct Person));
+    if (persons == NULL) {
+        printf("Memory allocation failed!\n");
+        return 1;
+    }
+```
