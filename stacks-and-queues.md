@@ -1,5 +1,8 @@
 # Stacks
 
+![image](https://github.com/user-attachments/assets/18ecf6ac-5f9b-44c4-a33c-a1a4b549dc42)
+Definition: Refer unit 1
+
 #### Example: Array representation of Stack and it's operations
 
 ```c
@@ -28,6 +31,7 @@ int pop (int top) {
     top--;
     return top;
 }
+// Peek dsiaplys stack[top]
 void display (int top) {
     if (top == -1) {
         printf("Stack is empty");
@@ -61,7 +65,93 @@ int main() {
 }
 ```
 
+---
+
+### Applications of Stacks:
+
+Here’s a concise explanation of the **applications of stacks** in small paragraphs with examples:
+
+##### 1. Conversion of Arithmetic Expression
+
+Stacks are used to convert arithmetic expressions between notations, such as **infix** (e.g., `A + B`), **prefix** (e.g., `+ A B`), and **postfix** (e.g., `A B +`). For example, the **Shunting Yard Algorithm** uses a stack to convert infix expressions to postfix notation. The stack ensures that operators are placed correctly based on precedence and associativity. This is useful in compilers and calculators.
+
+##### 2. Evaluation of Arithmetic Expression
+
+Stacks are used to evaluate arithmetic expressions, especially in **postfix notation**. For example, to evaluate `3 4 + 5 *`, a stack is used to store operands.
+For every character of postfix expression do
+
+1. If operand, then, PUSH the character on stack
+2. If operator, then,
+
+- opnd2 POP( )
+- opnd1 POP( )
+- PUSH ( eval(opnd1 operator opnd2))
+  Stack top contains the evaluated value
+
+##### 3. Recursion
+
+Stacks are essential for implementing **recursion** in programming. When a function calls itself, its state (e.g., variables, return address) is pushed onto the **call stack**. Once the recursive call completes, the state is popped, and the program resumes execution. For example, in calculating the factorial of a number, the stack keeps track of each recursive call until the base case is reached.
+
+##### 4. Tree Traversal (Inorder, Preorder, Postorder)
+
+Stacks are used in **iterative tree traversals** to simulate the recursive process. For example:
+
+- **Inorder Traversal**: Left, Root, Right (e.g., `4, 2, 5, 1, 3`).
+- **Preorder Traversal**: Root, Left, Right (e.g., `1, 2, 4, 5, 3`).
+- **Postorder Traversal**: Left, Right, Root (e.g., `4, 5, 2, 3, 1`).
+
+The stack keeps track of nodes to be visited, ensuring the correct order of traversal.
+
+##### 5. Graph Traversal (BFS, DFS)
+
+Stacks are used in **Depth-First Search (DFS)** for graph traversal. In DFS, nodes are explored as deep as possible before backtracking. For example, starting from node `A`, the stack is used to push and pop nodes like `A → B → D → C`. In contrast, **Breadth-First Search (BFS)** uses a queue to explore nodes level by level (e.g., `A → B → C → D`).
+
+| **Application**               | **Example**                                       |
+| ----------------------------- | ------------------------------------------------- |
+| Conversion of Arithmetic Exp. | Infix `A + B` → Postfix `A B +` using a stack.    |
+| Evaluation of Arithmetic Exp. | Evaluate `3 4 + 5 *` using a stack.               |
+| Recursion                     | Factorial calculation using the call stack.       |
+| Tree Traversal                | Inorder traversal of a binary tree using a stack. |
+| Graph Traversal               | DFS traversal of a graph using a stack.           |
+
+---
+
 ### Infix to Postfix and Prefix using Stacks:
+
+##### Infix to postfix
+
+![Innfix to Postfix](https://github.com/user-attachments/assets/95044e86-5463-45af-aa9c-c25197a07174)
+(Same for Prefix but scan reversed infix and reverse the "postfix" in the end)
+
+#### Algorithm: Infix to Postfix
+
+Let **X** be an arithmetic expression written in infix notation. This algorithm finds the equivalent postfix expression **Y**.
+
+1. Push `"("` onto the **Stack**, and add `")"` to the end of **X**.
+2. Scan **X** from left to right and repeat **Steps 3 to 6** for each element of **X** until the **Stack** is empty.
+3. If an **operand** is encountered, add it to **Y**.
+4. If a **left parenthesis** `"("` is encountered, push it onto the **Stack**.
+5. If an **operator** is encountered, then:
+   1. Repeatedly pop from the **Stack** and add to **Y** each operator (on the top of the **Stack**) that has the **same precedence** or **higher precedence** than the current operator.  
+      (i.e., if `input operator <= stack top operator`)
+   2. Add the current operator to the **Stack**.  
+       (i.e., if `input operator > stack top operator`)  
+      **[End of If]**
+6. If a **right parenthesis** `")"` is encountered, then:
+   1. Repeatedly pop from the **Stack** and add to **Y** each operator (on the top of the **Stack**) until a **left parenthesis** `"("` is encountered.
+   2. Remove the **left parenthesis** from the **Stack**.  
+      **[End of If]**  
+      **[End of If]**
+7. **END**.
+
+#### Algorithm: Infix to Prefix
+
+Expression = (A+B^C)\*D+E^5
+
+1. Reverse the infix expression. 5^E+D\*)C^B+A(
+2. Make Every ‘(‘ as ‘)’ and every ‘)’ as ‘(‘ 5^E+D\*(C^B+A)
+3. Convert expression to postfix form. A+(B*C-(D/E-F)*G)\*H
+4. Reverse the postfix Expression
 
 ```c
 // Infix to Postfix and Prefix using stacks
@@ -100,7 +190,7 @@ void infixtopostfix() {
                 push(symbol);
                 break;
             case ')':
-                while (stack[top] != '(') {
+                while (stack[top] != '(') { // pop between (...)
                     postfix[j++] = pop();
                 }
                 pop(); // Pop '(' from stack
@@ -110,10 +200,10 @@ void infixtopostfix() {
             case '*':
             case '/':
             case '^':
-                while (preceed(stack[top]) >= preceed(symbol)) {
+                while (preceed(stack[top]) >= preceed(symbol)) { //higher precendance cant tolerate lower precendence
                     postfix[j++] = pop();
                 }
-                push(symbol);
+                push(symbol); //pop the higher one then push
                 break;
             default:
                 postfix[j++] = symbol; // Add operands directly to postfix
@@ -157,13 +247,25 @@ int main() {
 }
 ```
 
-### Recursion
+---
 
-Recursion is a technique that breaks down a complex problem into smaller problems, and then solves those smaller problems to solve the original problem. It's used in many disciplines, including computer science, mathematics, linguistics, and logic
+### Evaluation Algorithm
 
-Here are example programs in C for each of the requested recursive algorithms:
+1. Add ) to postfix expression.
+2. Read postfix expression Left to Right until ) encountered
+3. If operand is encountered, push it onto Stack [End If]
+4. If operator is encountered, Pop two elements
+   - A -> Top element
+   - B-> Next to Top element
+   - Evaluate B operator A push B operator A onto Stack
+5. Set result = pop
+6. END
 
 ---
+
+### Recursion
+
+Recursion in C is a programming technique where a function calls itself to solve a problem by breaking it down into smaller subproblems. It typically involves a base case to stop the recursion and a recursive case that defines how the function calls itself.
 
 ### 1. Factorial
 
@@ -261,7 +363,10 @@ int main() {
 
 ---
 
-## Queues
+# Queues
+
+![image](https://github.com/user-attachments/assets/0f7b682f-bc00-4a4a-8e05-e61cc9362f36)
+FIFO (First in First out)
 
 #### Example: Implementation using array and queue operations
 
@@ -286,27 +391,7 @@ void main() {
         scanf("%d", &option);
 
         switch (option) {
-            case 1:
-                qinsert();
-                getch();
-                clrscr();
-                break;
-            case 2:
-                qdelete();
-                getch();
-                clrscr();
-                break;
-            case 3:
-                qdisplay();
-                getch();
-                clrscr();
-                break;
-            case 4:
-                exit(0);
-            default:
-                printf("invalid choice\n");
-                break;
-        }
+            //yuh
     }
 }
 
@@ -355,7 +440,16 @@ qdisplay() {
 
 ---
 
-### 1. Circular Queue
+### Types of queues
+
+1. Normal queue
+2. Circular queue
+3. Double ended queue
+4. Priority queue
+
+---
+
+### Circular Queue
 
 In a **circular queue**, the last position connects back to the first, forming a circle. This structure avoids the need to shift elements and uses the space more efficiently. It works on FIFO principle and forms what's called as a "Ring buffer"
 ![Circular queue img](https://github.com/user-attachments/assets/0a3c13f3-7155-4eb2-8769-b54f068687de)
@@ -441,15 +535,24 @@ int main() {
 
 ```
 
+(Yuh so basically it's the same as normal array queue but with quirky (x+1)%SIZE stuff instead of simple x++)
+
 ---
 
-### 2. Deque (Double-Ended Queue)
+### Deque (Double-Ended Queue)
 
-A **deque** allows insertion and deletion from both ends. It can be **implemented with a singly linked list**
+A **deque** allows insertion and deletion from both ends. It can be **implemented with a singly linked list** (ez lab program)
 
-#### Code Example (Deque)
+#### Dequeue with SLL (Fill in the gaps)
 
 ```c
+#include<stdio.h>
+#include<stdlib.h>
+struct node {
+    int data;
+    struct node *link;
+} node;
+typedef struct node *NODE;
 NODE getnode() {
     NODE temp;
     temp = (NODE)malloc(sizeof(struct node)); //Initialize the memory size for the new node created
@@ -526,110 +629,133 @@ void display (NODE front) {
         printf("%d ", temp->data);
     }
 }
+int main () {
+	 NODE front = NULL;
+	//menu
+}
 ```
-
-### Explanation
-
-- **insertFront/insertRear**: Inserts elements at front or rear. Handles wraparounds.
-- **deleteFront/deleteRear**: Removes elements from front or rear.
-- **display**: Shows all elements from `front` to `rear`.
 
 ---
 
-### 3. Priority Queue
+### Priority Queue
 
 A **priority queue** assigns priorities to elements. Elements with a higher priority are dequeued first.
+It’s a special type of queue where Insertion happens from rear end but deletion is based on priority (There are Ascending and Descending Priority Queues)
+
+```c++
+#include <bits/stdc++.h>
+using namespace std;
+// Structure for the elements in the priority queue
+struct item {
+    int value;
+    int priority;
+};
+// Store the elements of the priority queue
+item pr[10000];
+// Pointer to the last index
+int size = -1;
+// Function to insert a new element into the priority queue
+void enqueue(int value, int priority) {
+    // Increase the size
+    size++;
+    // Insert the element
+    pr[size].value = value;
+    pr[size].priority = priority;
+}
+
+// Function to find the position of the element with the highest priority
+int peek() {
+    int highestPriority = INT_MIN;
+    int ind = -1;
+
+    // Check for the element with the highest priority
+    for (int i = 0; i <= size; i++) {
+        // If priority is the same, choose the element with the highest value
+        if (highestPriority == pr[i].priority && ind > -1 && pr[ind].value < pr[i].value) {
+            highestPriority = pr[i].priority;
+            ind = i;
+        } else if (highestPriority < pr[i].priority) {
+            highestPriority = pr[i].priority;
+            ind = i;
+        }
+    }
+    // Return the position of the element
+    return ind;
+}
+
+// Function to remove the element with the highest priority
+void dequeue() {
+    // Find the position of the element with the highest priority
+    int ind = peek();
+    // Shift the elements one index back from the position of the element
+    // with the highest priority
+    for (int i = ind; i < size; i++) {
+        pr[i] = pr[i + 1];
+    }
+    // Decrease the size of the priority queue by one
+    size--;
+}
+int main() {
+    // Function calls to insert elements as per their priority
+    enqueue(10, 2);
+    enqueue(14, 4);
+    enqueue(16, 4);
+    enqueue(12, 3);
+    // Stores the top element at the moment
+    int ind = peek();
+    cout << pr[ind].value << endl;
+    // Dequeue the top element
+    dequeue();
+    // Check the top element
+    ind = peek();
+    cout << pr[ind].value << endl;
+    // Dequeue the top element
+    dequeue();
+    // Check the top element
+    ind = peek();
+    cout << pr[ind].value << endl;
+    return 0;
+}
+```
 
 ---
 
-## Multiple Stacks
+### Multiple stacks and queues in real-life applications
 
-Imagine you have a bunch of boxes, and you want to put different things in each box. That's like having multiple stacks!
+Multiple stacks and queues are used in various real-life applications to efficiently manage multiple data streams, independent workflows, and parallel processes. Here are some common scenarios where they come in handy:
 
-A stack is like a pile of things, where you can only add or remove things from the top. Imagine you have a stack of books. You can put a new book on top, or take the book on top off.
+##### 1. Memory management in operating systems
 
-Now, let's say you have three different piles of things - one for your toys, one for your school supplies, and one for your clothes. That's like having three different stacks!
+- **Multiple stacks**: Each process or thread has its own stack to manage function calls, local variables, and return addresses. This ensures that data from one process doesn’t interfere with another.
+- **Multiple queues**: Operating systems use queues to manage tasks like high-priority vs. low-priority tasks in scheduling, I/O operations, and load balancing. For example, real-time tasks may be managed in one queue while background tasks are in another.
 
-Here's how you can create multiple stacks in code:
+##### 2. Web servers and load balancing
 
-```c
-#define MAX_STACKS 3
-int top[MAX_STACKS] = {-1, -1, -1};
-char stacks[MAX_STACKS][100];
+- **Multiple queues**: Web servers handle multiple client requests simultaneously. Separate queues for different types of requests (e.g., read vs. write operations) help prioritize resources.
+- **Multiple stacks**: Each connection might have its own stack to track the state of its request and response lifecycle, including nested functions or operations.
 
-// Push an item onto a stack
-void push(int stack_num, char item) {
-    if (top[stack_num] >= 99) {
-        printf("Stack %d is full!\n", stack_num);
-        return;
-    }
-    stacks[stack_num][++top[stack_num]] = item;
-    printf("Pushed %c onto stack %d\n", item, stack_num);
-}
+##### 3. Multi-user games
 
-// Pop an item from a stack
-char pop(int stack_num) {
-    if (top[stack_num] == -1) {
-        printf("Stack %d is empty!\n", stack_num);
-        return '\0';
-    }
-    return stacks[stack_num][top[stack_num]--];
-}
-```
+- **Multiple queues**: Multiplayer games manage simultaneous actions from various players. Actions for each player can be stored in a separate queue and processed in order of arrival.
+- **Multiple stacks**: Each player’s character may have a separate stack for managing actions, especially when moves or spells involve nested sequences.
 
-In this example, we have three stacks (`MAX_STACKS = 3`). Each stack has its own `top` index, which keeps track of the last item added to the stack.
+##### 4. Customer support systems
 
-The `push()` function adds an item to the top of the selected stack, and the `pop()` function removes and returns the item from the top of the selected stack.
+- **Multiple queues**: Customer support systems use queues to organize and prioritize requests based on urgency, type of issue, or customer tier. For example, VIP customers may have a dedicated queue with higher priority.
 
-You can use these functions to add and remove items from each of your three stacks, just like you can add and remove books from your different piles of things.
+##### 5. Undo and redo mechanisms in applications
 
-## Multiple Queues
+- **Multiple stacks**: Applications like text editors or graphic software allow users to undo or redo actions. Each document or project can have its own undo and redo stacks, enabling independent management of history for multiple files.
 
-Queues are a bit different from stacks. In a queue, you add things to the back and take them out from the front, like waiting in line at the grocery store.
+##### 6. Robotics and embedded systems
 
-Now, let's say you have three different lines - one for your friends, one for your family, and one for your teachers. That's like having three different queues!
+- **Multiple queues**: In robotics, each sensor or component might produce data at different rates. Multiple queues allow efficient data handling by separating and prioritizing inputs from sensors, motors, cameras, etc.
+- **Multiple stacks**: Each robot task (e.g., navigation, object detection) might have its own stack to handle specific routines and manage function calls independently.
 
-Here's how you can create multiple queues in code:
+##### 7. Real-time data processing (e.g., IoT or finance)
 
-```c
-#define MAX_QUEUES 3
-#define QUEUE_SIZE 10
-int front[MAX_QUEUES] = {-1, -1, -1};
-int rear[MAX_QUEUES] = {-1, -1, -1};
-char queues[MAX_QUEUES][QUEUE_SIZE];
+- **Multiple queues**: Systems handle data from various sensors or data feeds. For example, a stock trading system might have separate queues for real-time data, historical data, and trade requests, ensuring timely processing.
 
-// Enqueue an item into a queue
-void enqueue(int queue_num, char item) {
-    if (rear[queue_num] == QUEUE_SIZE - 1) {
-        printf("Queue %d is full!\n", queue_num);
-        return;
-    }
-    if (front[queue_num] == -1) {
-        front[queue_num] = 0;
-    }
-    queues[queue_num][++rear[queue_num]] = item;
-    printf("Enqueued %c into queue %d\n", item, queue_num);
-}
+##### 8. Printing systems
 
-// Dequeue an item from a queue
-char dequeue(int queue_num) {
-    if (front[queue_num] == -1) {
-        printf("Queue %d is empty!\n", queue_num);
-        return '\0';
-    }
-    char item = queues[queue_num][front[queue_num]];
-    if (front[queue_num] == rear[queue_num]) {
-        front[queue_num] = -1;
-        rear[queue_num] = -1;
-    } else {
-        front[queue_num]++;
-    }
-    return item;
-}
-```
-
-In this example, we have three queues (`MAX_QUEUES = 3`). Each queue has its own `front` and `rear` indices, which keep track of the first and last items in the queue.
-
-The `enqueue()` function adds an item to the back of the selected queue, and the `dequeue()` function removes and returns the item from the front of the selected queue.
-
-We can use these functions to add and remove items from each of your three queues, just like we can wait in line and get served at each of your different lines.
+- **Multiple queues**: Printers in large organizations manage print jobs from multiple users or departments. Separate queues for high-priority jobs, color prints, and large documents ensure efficient and organized printing.
