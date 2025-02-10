@@ -22,7 +22,7 @@ int main() {
         infix[len - h] = temp;
     }
 
-    for (h = 0; h < strlen(infix); h++) { //Interchanging places doesnt chang ( to ) so gitta do ourselves lol
+    for (h = 0; h < strlen(infix); h++) { //Interchanging places doesn't chang ( to ) so gotta do ourselves lol
         if (infix[h] == ')') {
             infix[h] = '(';
         } else if (infix[h] == '(') {
@@ -69,7 +69,7 @@ void infixtopostfix() {
             case '^':
             case '+':
             case '-':
-                while (preceed(stack[top]) >= preceed(symbol)) { //lesser precedence can tolerate higher precedence and not the other way round
+                while (preceed(stack[top]) >= preceed(symbol)) { //higher precendence cannot tolerate lower precendance operator on top of it
                     postfix[j++] = pop();
                 }
                 push(symbol);
