@@ -1,93 +1,61 @@
 #include <stdio.h>
-#include <math.h>
+#include <ctype.h>
 #include <stdlib.h>
-#include <ctype.h> // For isalnum() and isalpha()
 
-// Define the structure of a binary tree node
 struct node {
-    int data;                // Data stored in the node (operand or operator)
-    struct node *lchild;     // Pointer to the left child
-    struct node *rchild;     // Pointer to the right child
-};
-typedef struct node *NODE;
+    int data;
+    struct node *llink;
+    struct node *rlink;
+}; 
 
-// Global root node for the expression tree
+typedef struct node *NODE;
 NODE root = NULL;
 
-// Function prototypes
-NODE create_tree(char postfix[]);
-float eval(NODE root);
-
-int main() {
-    char postfix[20];
-    float result;
-    printf("Enter the postfix expression: ");
-    scanf("%s", postfix);
-
-    // Create the expression tree from the postfix expression
-    root = create_tree(postfix);
-
-    // Evaluate the expression tree
-    result = eval(root);
-
-    // Print the result
-    printf("Result = %f\n", result);
-
-    return 0;
-}
-
-// Function to create an expression tree from a postfix expression
-NODE create_tree(char postfix[]) {
-    NODE temp, stack[20];  // Temporary node and stack for tree creation
-    int i = 0, j = 0;      // Iterators for postfix and stack
+NODE createTree(char postfix[]) {
+    NODE stack[20], temp;
+    int top = -1;
     char symbol;
 
-    // Process each character in the postfix expression
-    for (i = 0; (symbol = postfix[i]) != '\0'; i++) {
-        // Create a new node for the current character
-        temp = (NODE)malloc(sizeof(struct node));
-        temp->lchild = temp->rchild = NULL; // Initialize children as NULL
-        temp->data = symbol;               // Assign the symbol to the node
-
-        if (isalnum(symbol)) {
-            // If the symbol is an operand, push it onto the stack
-            stack[j++] = temp;
-        } else {
-            // If the symbol is an operator
-            temp->rchild = stack[--j];  // Pop the right child from the stack
-            temp->lchild = stack[--j]; // Pop the left child from the stack
-            stack[j++] = temp;         // Push the operator node back onto the stack
+    for (int i = 0; (symbol = postfix[i]) != '\0'; i++) {
+        temp = (NODE)malloc(sizeof(struct node)); // Allocate memory for a new node
+        if (isalnum(symbol)) { // Operand
+            temp->data = symbol; // Store the operand
+            temp->llink = temp->rlink = NULL; // Initialize links to NULL
+            stack[++top] = temp; // Push the node onto the stack
+        } else { // Operator
+            temp->data = symbol; // Store the operator
+            temp->rlink = stack[top--]; // Right child
+            temp->llink = stack[top--]; // Left child
+            stack[++top] = temp; // Push the new subtree onto the stack
         }
     }
-
-    return stack[--j]; // The last node in the stack is the root of the tree
+    return stack[top]; // Return the root of the tree
 }
 
-// Function to evaluate the expression tree
 float eval(NODE root) {
-    float num;
+    if (root == NULL) return 0; // Handle null case
 
-    // Switch on the node's data to check if it's an operator or operand
-    switch (root->data) {
-        case '+':
-            return eval(root->lchild) + eval(root->rchild); // Evaluate left and right and add
-        case '-':
-            return eval(root->lchild) - eval(root->rchild); // Evaluate left and right and subtract
-        case '/':
-            return eval(root->lchild) / eval(root->rchild); // Evaluate left and right and divide
-        case '*':
-            return eval(root->lchild) * eval(root->rchild); // Evaluate left and right and multiply
-        case '^':
-            return pow(eval(root->lchild), eval(root->rchild)); // Evaluate left and right and raise to power
-        default:
-            if (isalpha(root->data)) {
-                // If the node is a variable, ask the user for its value
-                printf("Enter the value of %c: ", root->data);
-                scanf("%f", &num);
-                return num;
-            } else {
-                // If the node is a numeric operand, convert it to a float
-                return (root->data - '0');
-            }
+    if (isdigit(root->data)) {
+        return root->data - '0'; // Convert char to int
     }
+
+    float leftVal = eval(root->llink); // Evaluate left subtree
+    float rightVal = eval(root->rlink); // Evaluate right subtree
+
+    switch (root->data) {
+        case '+': return leftVal + rightVal;
+        case '-': return leftVal - rightVal;
+        case '*': return leftVal * rightVal;
+        case '/': return leftVal / rightVal;
+        default: return 0; // Handle unexpected cases
+    }
+}
+
+int main() {
+    printf("Try programiz.pro\n");
+    char postfix[] = "33+";
+    root = createTree(postfix);
+    float ans = eval(root);
+    printf("Ans: %f\n", ans);
+    return 0;
 }
