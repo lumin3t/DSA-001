@@ -1,47 +1,42 @@
-#include <stdio.h>   
-#include <stdlib.h>  
-
-int main() {
-    int a[100], a1[100], i, j, result, n, cnt = 0;
-    printf("Enter the number of elements: ");
-    scanf("%d", &n);
-    printf("Enter the elements\n");
-    for(i = 0; i < n; i++) {
-        scanf("%d", &a[i]);
-    }
-    // Initialize the hash table (a1) to -1, indicating empty slots
-    for(i = 0; i < 10; i++) {
+#include <stdio.h>
+int main () {
+    printf("uWu \n");
+    int i, a1[10], j, cnt=0;
+    int n = 3;
+    int a[3] = { 11, 20, 30 }; //assumed
+    for (i=0; i<10; i++) {
         a1[i] = -1;
     }
-    // Inserting elements into the hash table using open addressing (linear probing)
-    for(i = 0; i < n; i++) {
-        result = a[i] % 10;  // Hash function
-        if(a1[result] == -1) { //if empty
+    for(i=0; i<10; i++) {
+        printf("%d ", a1[i]);
+    }
+    for (i=0; i<n; i++) {
+        int result = a[i]%10;
+        if (a1[result] == -1) {
             a1[result] = a[i];
-            printf("Location: a1[%d], Value: %d\n", result, a1[result]);
+            printf("%d stored at a1[%d]\n", a[i], result);
         } else {
-            // Collision handling
-            j = result + 1;  // Start from the next index
+            j = result + 1;
             while(1) {
-                if(a1[j] == -1) {  // Check if the slot is empty
-                    a1[j] = a[i];
-                    printf("Location: a1[%d], Value: %d\n", j, a1[j]);
-                    break;
-                }
-                if(j > 9) {  // Wrap arpund
+                if (j>9) { //wrap
                     j = 0;
                 }
-                if(cnt == n) {
+                 if (a1[j] == -1) {
+                    a1[j] = a[i];
+                    printf("%d stored at a1[%d]", a[i], j);
                     break;
                 }
-                cnt++;  
-                j++;   
+                cnt++;
+                if(cnt>=n) {
+                    break;
+                }
+                j++;
             }
         }
     }
-    printf("Hash table using open addressing mode:\n");
-    for(i = 0; i < 10; i++) {
-        if(a1[i] != -1) {  // Print only the filled slots
+    printf("Hash table: ");
+    for(i=0; i<n; i++) {
+        if(a1[i] != -1) {
             printf("%d ", a1[i]);
         }
     }

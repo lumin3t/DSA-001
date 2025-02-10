@@ -16,9 +16,9 @@ int main() {
         exit(0);
     }
     printf("Enter content for file1:\n");
-    fgets(data1, sizeof(data1), stdin);  // Use fgets to prevent buffer overflow
+    fgets(data1, sizeof(data1), stdin);  // Use fgets to prevent buffer overflow, gets(data1) in turboc
     printf("Enter content for file2:\n");
-    fgets(data2, sizeof(data2), stdin);  // Use gets(data) for old and rusty compilers
+    fgets(data2, sizeof(data2), stdin);  // Use gets(data) for old and rusty compilers , gets(data2) in turboc
 
     fprintf(fout1, "%s", data1);
     fprintf(fout2, "%s", data2);

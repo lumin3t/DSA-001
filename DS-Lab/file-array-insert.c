@@ -11,7 +11,7 @@ void main() {
     FILE *fout, *fin;
     int i, n;
 
-    fout = fopen("student.dat", "wb");  // Open in binary write mode
+    fout = fopen("student.dat", "wb");  // Open in binary write mode, in turboc do ("student.txt", "w")
     if (fout == NULL) {
         printf("Error, could not open file....\n");
         exit(0);
