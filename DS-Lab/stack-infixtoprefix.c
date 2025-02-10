@@ -72,10 +72,10 @@ void infixtopostfix() {
                 while (preceed(stack[top]) >= preceed(symbol)) { //higher precendence cannot tolerate lower precendance operator on top of it
                     postfix[j++] = pop();
                 }
-                push(symbol);
+                push(symbol); 
                 break;
             default:
-                postfix[j++] = symbol; // Operant variable
+                postfix[j++] = symbol; // Operand, variable
         }
         i++; //Increment i to move on to next symbol
     }
