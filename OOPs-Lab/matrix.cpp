@@ -7,6 +7,7 @@ private:
     int row, col;
 
 public:
+    //functions
     void getData();
     bool operator==(const Matrix &);
     Matrix operator+(const Matrix &);
@@ -30,7 +31,7 @@ void Matrix::getData() {
 }
 
 Matrix Matrix::operator+(const Matrix &am) {
-    Matrix temp;
+    Matrix temp;//new result matrix
     temp.row = row;
     temp.col = col;
     for (int i = 0; i < row; i++) {
@@ -42,7 +43,7 @@ Matrix Matrix::operator+(const Matrix &am) {
 }
 
 Matrix Matrix::operator-(const Matrix &sm) {
-    Matrix temp;
+    Matrix temp; //new result matrix
     temp.row = row;
     temp.col = col;
     for (int i = 0; i < row; i++) {

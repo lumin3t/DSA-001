@@ -4,31 +4,26 @@ reverse order to the File2.txt.
 #include<iostream>
 #include<fstream>
 #include<string.h>
-using namespace std;
-
-int main(){
+using namespace std; 
+int main () {
     char content[1000];
     char str[1000];
-    fstream file1("file1.txt", ios::out);
-    cout<<"enter text:";
+    fstream fout("file1.txt", ios::out);
+    cout<<"Enter txt: ";
+    cin.getline(content, 1000);
+    fout << content;
+    fout.close();
 
-    //write content to file1
-    cin.getline(content,1000);
-    file1<<content;
-    file1.close();
+    fstream fin("file1.txt", ios::in);
+    fin.getline(str, 1000);
+    fin.close();
 
-    //read from file1
-    file1.open("file1.txt",ios::in);
-    file1.getline(str,1000);
-    file1.close();
-
-    //reverse and write to file2
-    int length=strlen(str);
-    fstream  file2("file2.txt",ios::out);
-    for(int i=length-1;i>=0;i--) {
-        file2<<str[i];
+    fstream fout2("file2.txt", ios::out);
+    int len = strlen(str);
+    for(int i = len - 1; i >= 0; i--) {
+        fout2 << str[i];
     }
-    file2.close();
-    cout<<"reversed content saved to file2.txt";
+    fout2.close();
+    cout<<"Reversed content saved in file2";
     return 0;
 }
