@@ -13,7 +13,7 @@ public:
     Matrix operator+(const Matrix &);
     Matrix operator-(const Matrix &);
     friend ostream &operator<<(ostream &, const Matrix &);
-};
+}; //what
 
 bool Matrix::operator==(const Matrix &cm) {
     return (row == cm.row && col == cm.col);
