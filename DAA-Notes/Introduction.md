@@ -37,75 +37,6 @@ An algorithm is a **step-by-step procedure** (recipe, method, technique) with th
 - **Geometric Problems** → Solving problems involving shapes, points, and spatial relationships.
 - **Numerical Problems** → Addressing mathematical computations and number-related algorithms.
 
-### Sorting Algorithms
-
-#### Key Properties
-
-- **Stability** → Preserves order of equal elements.
-- **In-place** → Uses minimal extra memory (usually O(1)).
-
-#### Example: Selection Sort (O(n²))
-
-```java
-import java.util.Arrays;
-
-public class SelectionSort {
-    public static void main(String[] args) {
-        int[] A = {3, 1, 2};
-        System.out.println("Unsorted: " + Arrays.toString(A));
-
-        for (int i = 0; i < A.length - 1; i++) {
-            int min = i;
-            for (int j = i + 1; j < A.length; j++) {
-                if (A[j] < A[min]) min = j;
-            }
-            // Swap
-            int temp = A[i];
-            A[i] = A[min];
-            A[min] = temp;
-        }
-
-        System.out.println("Sorted: " + Arrays.toString(A));
-    }
-}
-```
-
-**Time Complexity**: O(n²) (Inefficient for large datasets)
-
-### Searching Algorithms
-
-#### Example: Binary Search (O(log n))
-
-```java
-import java.util.Arrays;
-
-class BinarySearch {
-    public static void main(String[] args) {
-        int[] A = {0, 1, 2, 3, 4, 5};
-        int key = 3;
-        boolean found = false;
-        int low = 0, high = A.length - 1;
-
-        while (low <= high) {
-            int mid = (low + high) / 2;
-            if (A[mid] == key) {
-                System.out.println("Found at index " + mid);
-                found = true;
-                break;
-            } else if (A[mid] < key) {
-                low = mid + 1;
-            } else {
-                high = mid - 1;
-            }
-        }
-
-        if (!found) System.out.println("Not found");
-    }
-}
-```
-
-**Time Complexity**: O(log n) (Efficient for sorted arrays)
-
 ### Algorithm Design Techniques _(To be discussed further)_
 
 - Divide and Conquer
@@ -202,3 +133,47 @@ Common runtime complexity categories:
 6. O(n³) - Cubic
 7. O(2ⁿ) - Exponential
 8. O(n!) - Factorial
+
+![proof asymptotic](https://github.com/user-attachments/assets/8eae5e3f-7175-453e-89ab-99575ba3c0d8)
+
+# Mathematical Analysis of Recursive and Non-Recursive Algorithms
+
+1. Input size
+2. Basic op
+3. Number of times it been repeated
+4. Set up recurrance relation
+5. Solve it
+
+![formulas: ](https://github.com/user-attachments/assets/ee615567-46f5-4d86-a852-c17830ea0c87)
+![non recursive 1](https://github.com/user-attachments/assets/001d67b5-5a3d-4a80-be31-63bebfb33961)
+
+Binary rep : O(logn)
+
+```
+count = 1 //min
+while (n>1) do
+	count++
+	n = n/2
+return count
+```
+
+### Recurrence Relation (for recursive algos)
+
+- Forward subs
+- Backward subs
+  ![recursive](https://github.com/user-attachments/assets/8b41678b-062c-4d65-a8d8-3f7d58c798ef)
+
+TOH:
+
+![TOH](https://github.com/user-attachments/assets/9b98c814-cb7f-42bd-aea9-5b56ee3a71da)
+
+# Empirical Analysis
+
+Empirical analysis is an alternative to the mathematical analysis of an algorithm’s efficiency that includes the following steps
+ Understand the experiment’s purpose.
+ Decide on the efficiency metric M to be measured and the measurement unit(an operation count vs. a time unit).
+ Decide on characteristics of the input sample (its range, size, and so on).
+ Prepare a program implementing the algorithm (or algorithms) for the experimentation.
+ Generate a sample of inputs.
+ Run the algorithm (or algorithms) on the sample’s inputs and record the dataobserved.
+ Analyze the data obtained Algorithm Vi
