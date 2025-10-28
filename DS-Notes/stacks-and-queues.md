@@ -68,8 +68,7 @@ int main() {
 ---
 
 ### Applications of Stacks:
-
-Here’s a concise explanation of the **applications of stacks** in small paragraphs with examples:
+ **Applications of stacks** in small paragraphs with examples:
 
 ##### 1. Conversion of Arithmetic Expression
 
